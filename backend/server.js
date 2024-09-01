@@ -20,3 +20,9 @@ app.listen(PORT, () => {
     console.log(`🚀 :: Server is up and running on PORT: ${PORT}`);
     ConnectDB();
 })
+
+//routes
+const userRoutes = require('./routes/user.routes');
+
+//API Middleware
+app.use(userRoutes);
