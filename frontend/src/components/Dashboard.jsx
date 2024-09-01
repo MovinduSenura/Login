@@ -15,9 +15,18 @@ const Dashboard = () => {
 
         try {
             const decodedToken = jwtDecode(token);
-            setUser(decodedToken);
+            const userId = decodedToken.id;
 
-            console.log(decodedToken)
+            const fetchData = async () => {
+                try {
+                    const response = await axios.post(`http://localhost:8000/user/${userId}`);
+                    setUser(response.data.user);
+                } catch (err) {
+                    setError("Failed to fetch data.");
+                }
+            };
+
+            fetchData();
         } catch (err) {
             setError("Failed to decode token.");
         }
@@ -39,8 +48,10 @@ const Dashboard = () => {
     return (
         <div className="p-8">
             <h1 className="text-2xl mb-4">Welcome, {user.userName}</h1>
+            {user.profilePicture && <img src={user.profilePicture} alt="Profile" className='h-20 w-20 rounded-full' />}
+            <br />
             <p>Email: {user.email}</p>
-            <button onClick={handleLogout} className="mt-4 bg-blue-900 text-white py-2 px-4 rounded">
+            <button onClick={handleLogout} className="mt-4 bg-red-500 text-white py-2 px-4 rounded">
                 Logout
             </button>
         </div>
